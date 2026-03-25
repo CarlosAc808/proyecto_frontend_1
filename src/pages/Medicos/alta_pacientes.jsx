@@ -31,14 +31,30 @@ function Alta_pacientes({ data, setData }){
         const[alergias, setAlergias]=useState("");
         const[padecimientoHeredofamiliar, setPadecimientoHeredofamiliar]=useState("");
         const [mostrarMensaje,setMostrarMensaje]=useState(false);
+        const [loading, setLoading] = useState(false);
         
 
         const finalizar = () => {
-            const altaPaciente = { id: Date.now(),nombre,apellidoP, apellidoM, nacimiento, genero,telefono,correo,colonia,ciudad,estado,codigoPostal,tipoSangre,alergias,padecimientoHeredofamiliar,direccion};
+            const altaPaciente = {
+  nombre,
+  apellidoP,
+  apellidoM,
+  nacimiento,
+  genero,
+  telefono,
+  correo,
+  direccion,
+  colonia,
+  ciudad,
+  estado,
+  codigoPostal,
+  tipoSangre,
+  alergias,
+  padecimientoHeredofamiliar
+};
             if (typeof setData === "function") {
-            setData(prev => [...prev, altaPaciente]); 
-            setMostrarMensaje(true); 
-            } 
+  setData(prev => [...prev, altaPaciente]); 
+}
             
              //  BACKEND LARAVEL (NUEVO)
             Axios.post(
@@ -46,8 +62,15 @@ function Alta_pacientes({ data, setData }){
                 altaPaciente
             )
             .then((response) => {
-                console.log("Guardado en Laravel:", response.data);
-            })
+    console.log("Guardado en Laravel:", response.data);
+
+    // MOSTRAR DATOS DE LA CUENTA
+    alert(
+      `Paciente creado correctamente\n\nCorreo: ${response.data.usuario}\nPassword: ${response.data.password}`
+    );
+
+    setMostrarMensaje(true);
+})
             .catch((error) => {
                 console.error("Error guardando en backend:", error);
             });
@@ -129,7 +152,16 @@ function Alta_pacientes({ data, setData }){
 
                         <Col md={6}>
                             <Form.Label>Genero</Form.Label>
-                            <Form.Control value={genero} onChange={(e) => setGenero(e.target.value)} type="text"/>
+
+                            <Form.Select
+                                value={genero}
+                                onChange={(e) => setGenero(e.target.value)}
+                            >
+                                <option value="">Seleccionar género</option>
+                                <option value="Masculino">M</option>
+                                <option value="Femenino">F</option>
+                            </Form.Select>
+
                         </Col>
 
                     </Row>
@@ -223,7 +255,9 @@ function Alta_pacientes({ data, setData }){
 
                     <Button variant="danger" style={{width:"25%", marginRight: "10px" }} as={Link} to="/Medicos/lista_paciente"> Cancelar</Button>
 
-                    <Button onClick={finalizar} style={{width:"25%"}}> Finalizar Registro </Button>
+                    <Button onClick={finalizar} disabled={loading} style={{width:"25%"}}>
+  {loading ? "Guardando..." : "Finalizar Registro"}
+</Button>
 
                 </div>
 
