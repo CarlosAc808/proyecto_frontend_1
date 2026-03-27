@@ -191,7 +191,7 @@ const citas = [
                       <div className="prescription-content">
                         <h5>{consulta.motivo}</h5>
                         <p>
-                          {consulta.paciente?.nombre} {consulta.paciente?.apellidoP}
+                          {consulta.paciente.usuario?.nombre} {consulta.paciente?.apellidoP}
                         </p>
                       </div>
                     </div>
