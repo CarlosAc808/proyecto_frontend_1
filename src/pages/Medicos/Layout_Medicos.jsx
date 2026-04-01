@@ -3,6 +3,7 @@ import {
   Avatar,
   Typography
 } from "@mui/material";
+import axios from "axios";
 
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonIcon from '@mui/icons-material/Person';
@@ -37,16 +38,9 @@ useEffect(() => {
     const user = JSON.parse(userStorage);
     setUsuario(user);
 
-    if (user.foto_url) {
-      Axios.get(`http://127.0.0.1:8000/api/usuario/foto/${user.foto_url}`, {
-        responseType: "blob"
-      })
-      .then(res => {
-        const imageUrl = URL.createObjectURL(res.data);
-        setFoto(imageUrl);
-      })
-      .catch(err => console.error("Error cargando imagen", err));
-    }
+ if (user.foto_url) {
+  setFoto(`http://127.0.0.1:8000/storage/fotos/usuarios/${user.foto_url}`);
+}
   }
 }, []);
 
