@@ -53,6 +53,7 @@ const [asignacion,setAsignacion] = useState({
 const [loading,setLoading] = useState(false);
 const [error,setError] = useState("");
 const [success,setSuccess] = useState("");
+const [inventario, setInventario] = useState([]);
 const [consultorios,setConsultorios] = useState([]);
 
 const handleChange=(e)=>{
@@ -161,6 +162,24 @@ const guardarInstrumento = async () => {
   obtenerInstrumentos();
 };
 
+const obtenerInventario = async () => {
+
+  try {
+
+    const response = await axios.get(
+      "http://127.0.0.1:8000/api/consultorio-instrumentos/inventario"
+    );
+
+    setInventario(response.data);
+
+  } catch (error) {
+
+    console.error(error);
+
+  }
+
+};
+
 const obtenerConsultorios = async () => {
 
   try {
@@ -197,6 +216,9 @@ useEffect(() => {
   obtenerHabitaciones();
 
   obtenerInstrumentos();
+
+  obtenerInventario();
+
 
 }, []);
 
@@ -753,6 +775,55 @@ Asignar
 </Row>
 
 </Card>
+
+
+
+<Card className="mt-5 p-4">
+
+<h4>🏥 Instrumentos por Consultorio</h4>
+
+<Table hover>
+
+<thead>
+
+<tr>
+  <th>Consultorio</th>
+  <th>Número</th>
+  <th>Instrumento</th>
+  <th>Categoría</th>
+  <th>Cantidad</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{
+inventario.map(item => (
+
+<tr key={item.id}>
+
+<td>{item.consultorio.nombre}</td>
+
+<td>{item.consultorio.numero}</td>
+
+<td>{item.instrumento.nombre}</td>
+
+<td>{item.instrumento.categoria}</td>
+
+<td>{item.cantidad}</td>
+
+</tr>
+
+))
+}
+
+</tbody>
+
+</Table>
+
+</Card>
+
 
 </div>
 
