@@ -9,6 +9,8 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function LogoutModal({ open, handleClose }) {
 
   const navigate = useNavigate();
