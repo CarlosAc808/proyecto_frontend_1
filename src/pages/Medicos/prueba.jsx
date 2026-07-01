@@ -12,6 +12,9 @@ import "./prueba.css";
 import { useNavigate } from "react-router-dom";
 import SlimSelect from 'slim-select';
 import 'slim-select/styles';
+
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Prueba() {
       // ===== ESTADOS (reemplazan document.getElementById) =====
   const [caducado, setCaducado]= useState(false);
@@ -66,7 +69,7 @@ const handleChangeRowsPerPage = (event) => {
   const obtenerProveedores = async () => {
   try {
     const response = await Axios.get(
-      "http://localhost:8000/api/proveedores"
+      `${API_URL}/proveedores`
     );
 
     setProveedores(response.data);
@@ -119,7 +122,7 @@ const handleChangeRowsPerPage = (event) => {
       console.log(orden);
 
       await Axios.post(
-        "http://localhost:8000/api/ordenes-compra",
+        `${API_URL}/ordenes-compra`,
         orden
       );
 
@@ -239,16 +242,16 @@ const handleChangeRowsPerPage = (event) => {
   const [historial, setHistorial] = useState([]);
 
 useEffect(() => {
-  Axios.get("http://127.0.0.1:8000/api/medicamentosselct")
+  Axios.get(`${API_URL}/medicamentosselct`)
     .then(res => setMedicamentos(res.data));
 
-  Axios.get("http://127.0.0.1:8000/api/proveedores")
+  Axios.get(`${API_URL}/proveedores`)
     .then(res => setProveedores(res.data));
 
-  Axios.get("http://127.0.0.1:8000/api/recetas")
+  Axios.get(`${API_URL}/recetas`)
     .then(res => setRecetas(res.data));
 
-  Axios.get("http://127.0.0.1:8000/api/movimientos")
+  Axios.get(`${API_URL}/movimientos`)
     .then(res => setHistorial(res.data));
 
 }, []);
@@ -321,7 +324,7 @@ const guardarMovimiento = () => {
 
   if (tipoMovimiento === "salida" && caducado && selectedMed) {
     
-      Axios.post("http://127.0.0.1:8000/api/medicamentoCaducado", {
+      Axios.post(`${API_URL}/medicamentoCaducado`, {
     medicamento_id: producto,
     cantidad,
     motivo,
@@ -344,7 +347,7 @@ const guardarMovimiento = () => {
   return;
   }
 
-  Axios.post("http://127.0.0.1:8000/api/guardarMovimientos", dataToSend)
+  Axios.post(`${API_URL}/guardarMovimientos`, dataToSend)
     .then(() => {
       if (tipoMovimiento === "salida" && selectedMed) {
         const manifiestoSalida = {
@@ -367,7 +370,7 @@ const guardarMovimiento = () => {
       alert("Guardado correctamente");
 
       //  refrescar tabla automáticamente
-      Axios.get("http://127.0.0.1:8000/api/movimientos")
+      Axios.get(`${API_URL}/movimientos`)
         .then(res => setHistorial(res.data));
 
       // limpiar

@@ -15,6 +15,8 @@ import axios from "axios";
 import "./Consultorios.css";
 import Table from "react-bootstrap/Table";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function AgregarConsultorio() {
 
 const [consultorio,setConsultorio] = useState({
@@ -74,7 +76,7 @@ const guardarConsultorio = async () => {
     );
 
     await axios.post(
-      "http://127.0.0.1:8000/api/consultorios",
+      `${API_URL}/consultorios`,
       {
         clinica_id: usuario.clinica_id,
         nombre: consultorio.nombre,
@@ -116,7 +118,7 @@ const guardarHabitacion = async () => {
   );
 
   await axios.post(
-    "http://127.0.0.1:8000/api/habitaciones",
+    `${API_URL}/habitaciones`,
     {
       ...habitacion,
       clinica_id: usuario.clinica_id
@@ -130,7 +132,7 @@ const guardarHabitacion = async () => {
 const obtenerInstrumentos = async () => {
 
   const response = await axios.get(
-    "http://127.0.0.1:8000/api/instrumentos"
+    `${API_URL}/instrumentos`
   );
 
   setInstrumentos(response.data);
@@ -138,7 +140,7 @@ const obtenerInstrumentos = async () => {
 const obtenerHabitaciones = async () => {
 
   const response = await axios.get(
-    "http://127.0.0.1:8000/api/habitaciones"
+    `${API_URL}/habitaciones`
   );
 
   setHabitaciones(response.data);
@@ -152,7 +154,7 @@ const guardarInstrumento = async () => {
   );
 
   await axios.post(
-    "http://127.0.0.1:8000/api/instrumentos",
+    `${API_URL}/instrumentos`,
     {
       ...instrumento,
       clinica_id: usuario.clinica_id
@@ -167,7 +169,7 @@ const obtenerInventario = async () => {
   try {
 
     const response = await axios.get(
-      "http://127.0.0.1:8000/api/consultorio-instrumentos/inventario"
+      `${API_URL}/consultorio-instrumentos/inventario`
     );
 
     setInventario(response.data);
@@ -185,7 +187,7 @@ const obtenerConsultorios = async () => {
   try {
 
     const response = await axios.get(
-      "http://127.0.0.1:8000/api/consultorios"
+      `${API_URL}/consultorios`
     );
 
     setConsultorios(response.data);
@@ -202,7 +204,7 @@ const obtenerConsultorios = async () => {
 const asignarInstrumento = async () => {
 
   await axios.post(
-    "http://127.0.0.1:8000/api/consultorio-instrumentos",
+    `${API_URL}/consultorio-instrumentos`,
     asignacion
   );
 
